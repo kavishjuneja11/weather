@@ -69,6 +69,9 @@
 
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"LastSeachedLatLong"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        _txtfieldLong.text = @"";
+        _txtfieldLat.text = @"";
 
         
         [fetch getWeatherIcon:weather.iconID];
