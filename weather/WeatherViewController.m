@@ -21,7 +21,30 @@
     
      fetch = [[WeatherFetcher alloc]init];
     fetch.delegate=self;
-
+    
+    
+    // Getting the last searched city from NSUSerDefaults and fetching the weather for that city.
+    
+    NSUserDefaults *lastWeather = [NSUserDefaults standardUserDefaults];
+    NSString*lastSearchedCity = [lastWeather stringForKey:@"LastSeachedCity"];
+    
+    if (lastSearchedCity!=nil && lastSearchedCity.length>0) {
+        _searchBar.text = lastSearchedCity;
+        [self didTapOnSearchIcon:_searchBar.text];
+    }
+    else{
+        NSString*lastSearchedCity = [lastWeather stringForKey:@"LastSeachedLatLong"];
+        NSArray *arrLatLong = [lastSearchedCity componentsSeparatedByString:@","];
+        NSString *lat = [arrLatLong objectAtIndex:0];
+        NSString *long1 = [arrLatLong objectAtIndex:1];
+        _searchBar.text=@"";
+        _txtfieldLat.text = lat;
+        _txtfieldLong.text = long1;
+        
+        [self didTapOnSearchIcon:_searchBar];
+    }
+   
+    
 }
 
 
@@ -40,6 +63,13 @@
         _lblMaxTemp.text =   [NSString stringWithFormat:@"%d\u00B0",weather.temperatureMax];
         _lblCurrentTemp.text =   [NSString stringWithFormat:@"%d\u00B0",weather.currentTemp];
         
+        [[NSUserDefaults standardUserDefaults] setObject:_searchBar.text forKey:@"LastSeachedCity"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"LastSeachedLatLong"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
         
         [fetch getWeatherIcon:weather.iconID];
         
@@ -69,6 +99,13 @@
             
             [fetch getWeatherIcon:weather.iconID];
             
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@,%@",_txtfieldLat.text,_txtfieldLong.text]forKey:@"LastSeachedLatLong"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"LastSeachedCity"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            
         }];
     }
     
@@ -83,6 +120,20 @@
     
     _weatherConditionImgView.image  = img;
 }
+
+/**
+ * Setter for clearing all data if no result found. Since this class is delegate for weatherFetcher this method is imlemented.
+ */
+
+-(void)clearAlltext{
+    
+    _lblCondition.text =  @"";
+    _lblMinTemp.text =   @"";
+    _lblMaxTemp.text =   @"";
+    _lblCurrentTemp.text =   @"";
+}
+
+
 /**
  * When switch is turned off/ on this method is called.
  * @param sender name

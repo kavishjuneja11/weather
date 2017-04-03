@@ -14,6 +14,7 @@
 @protocol weatherViewControllerDelegate <NSObject>
 
 -(void)setWeatherImage:(id)img;
+-(void)clearAlltext;
 
 @end
 

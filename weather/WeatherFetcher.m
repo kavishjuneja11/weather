@@ -234,6 +234,11 @@
     
     [alert show];
     
+    if (self.delegate && [self.delegate respondsToSelector:@selector(setWeatherImage:)]) {
+        [self.delegate clearAlltext];
+    }
+
+    
 }
 
 

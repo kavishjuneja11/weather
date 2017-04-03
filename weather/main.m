@@ -2,7 +2,7 @@
 //  main.m
 //  weather
 //
-//  Created by JJuneja, Kavish (Contractor) on 4/2/17.
+//  Created by Juneja, Kavish (Contractor) on 4/2/17.
 //  Copyright © 2017 Juneja, Kavish (Contractor). All rights reserved.
 //
 
