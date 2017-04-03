@@ -55,6 +55,9 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     
+    
+    [self.view endEditing:YES];
+    
     NSLog(@"text : %@",searchBar.text);
     [fetch getCurrentWeatherForCity:_searchBar.text isCelsius:!_TempInFSwitch.isOn  completionBlock:^(Weather* weather){
         
@@ -87,6 +90,8 @@
  */
 
 -(IBAction)didTapOnSearchIcon:(id)sender{
+    
+    [self.view endEditing:YES];
     
     if (_searchBar.text.length>0) {
         [self searchBarSearchButtonClicked:_searchBar];
