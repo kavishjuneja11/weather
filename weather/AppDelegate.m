@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  weather
 //
-//  Created by Junejha, Kavesh (Contractor) on 4/2/17.
+//  Created by Juneja, Kavish (Contractor) on 4/2/17.
 //  Copyright © 2017 Junejha, Kavesh (Contractor). All rights reserved.
 //
 

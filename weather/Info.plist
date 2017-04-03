@@ -34,5 +34,24 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>openweathermap.org</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<string>NO</string>
+				<key>NSIncludesSubdomains</key>
+				<string>YES</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>APPID</key>
+	<string>db437132f1b0182cbea41194fc27ce53</string>
+	<key>weatherBaseURL</key>
+	<string>http://api.openweathermap.org/data/2.5/weather?</string>
 </dict>
 </plist>
