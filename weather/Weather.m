@@ -17,7 +17,7 @@
     if (self) {
         /*
          * Parse weather data from the API into this weather
-         * object. Error check each field as there is no guarantee
+         * object. Error checking each field as there is no guarantee
          * that the same data will be available for every location
          */
         

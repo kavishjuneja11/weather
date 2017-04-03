@@ -3,7 +3,7 @@
 //  weather
 //
 //  Created by Junejha, Kavesh (Contractor) on 4/2/17.
-//  Copyright © 2017 Junejha, Kavesh (Contractor). All rights reserved.
+//  Copyright © 2017 Juneja, Kavish (Contractor). All rights reserved.
 //
 
 #import "WeatherViewController.h"
@@ -24,6 +24,12 @@
 
 }
 
+
+/**
+ * Action handler for user and sets the labels
+ * @param searchBar name
+ */
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     
     NSLog(@"text : %@",searchBar.text);
@@ -38,10 +44,14 @@
         [fetch getWeatherIcon:weather.iconID];
         
     }];
- 
-    //(Weather* weather)
-    
+     
 }
+
+
+/**
+ * Action handler for user.  When he taps on search icon in app. If the search bar is already having content then that value is taken up rather than in the lat long text fields.
+ * @param sender name
+ */
 
 -(IBAction)didTapOnSearchIcon:(id)sender{
     
@@ -63,12 +73,20 @@
     }
     
 }
+/**
+ * Setter for image for weather. Since this class is delegate for weatherFetcher this method is imlemented.
+ * @param img name
+ */
+
 
 -(void)setWeatherImage:(id)img{
     
     _weatherConditionImgView.image  = img;
 }
-
+/**
+ * When switch is turned off/ on this method is called.
+ * @param sender name
+ */
 
 - (IBAction)switchTapped:(id)sender{
     
@@ -79,6 +97,13 @@
         [self CovertTempToCelcius:_lblMaxTemp.text  :_lblMinTemp.text :_lblCurrentTemp.text ];
     }
 }
+
+/**
+ * Method to Covert Temperature in fahrenheite To Celcius
+ * @param max temp
+ * @param min temp
+ * @param current temp
+ */
 
 - (void)CovertTempToCelcius:(NSString*)max :(NSString*)min :(NSString*)current {
     float fahrenheitMax = [_lblMaxTemp.text doubleValue];
@@ -99,6 +124,12 @@
 }
 
 
+/**
+ * Method to Covert Temperature in Celcius To fahrenheite
+ * @param sender name
+ */
+
+
 - (void)CovertTempToF:(id)sender {
     float celciusMax = [_lblMaxTemp.text doubleValue];
     float fahrenheiteMax = (celciusMax * 1.8) + 32;
@@ -116,9 +147,6 @@
     _lblCurrentTemp.text = resultStringCurrent;
     
 }
-
-//(celsius * 1.8) + 32
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

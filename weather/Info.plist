@@ -49,5 +49,9 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>APPID</key>
+	<string>db437132f1b0182cbea41194fc27ce53</string>
+	<key>weatherBaseURL</key>
+	<string>http://api.openweathermap.org/data/2.5/weather?</string>
 </dict>
 </plist>

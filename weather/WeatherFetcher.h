@@ -2,12 +2,14 @@
 //  WeatherFetcher.h
 //  weather
 //
-//  Created by Junejha, Kavesh (Contractor) on 4/2/17.
-//  Copyright © 2017 Junejha, Kavesh (Contractor). All rights reserved.
+//  Created by Juneja, Kavish (Contractor) on 4/2/17.
+//  Copyright © 2017 Juneja, Kavish(Contractor). All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "Weather.h"
+
+//Protocol to communicate with weatherViewController. weatherViewController will implement the methods. 
 
 @protocol weatherViewControllerDelegate <NSObject>
 
@@ -47,6 +49,12 @@
  */
 
 - (void)getCurrentWeatherForCity:(NSString*)cityName isCelsius:(BOOL)isCelsius completionBlock:(void (^)(Weather *))completionBlock;
+
+
+/**
+ * Returns weather icon
+ * @param iconId name
+ */
 
 -(void)getWeatherIcon:(id)iconId;
 

@@ -2,17 +2,23 @@
 //  WeatherFetcher.m
 //  weather
 //
-//  Created by Junejha, Kavesh (Contractor) on 4/2/17.
-//  Copyright © 2017 Junejha, Kavesh (Contractor). All rights reserved.
+//  Created by Juneja, Kavish (Contractor) on 4/2/17.
+//  Copyright © 2017 Juneja, Kavish (Contractor). All rights reserved.
 //
 
 #import "WeatherFetcher.h"
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
-#import "AFHTTPRequestOperation.h"
+#import <AFNetworking/AFHTTPRequestOperation.h>
 #import "UIAlertController+Window.h"
 
 @implementation WeatherFetcher
-@synthesize delegate    ;
+@synthesize delegate ;
+
+
+/**
+ * Returns weather condition by taking the input as URL. Interface method to AFnetworking.
+ * @param URL Location latitude
+ */
 
 - (void)fetchWeatherFromProvider:(NSString*)URL completionBlock:
 (void (^)(NSDictionary *))completionBlock {
@@ -26,37 +32,51 @@
              
          } else {
              // handle no results
-              completionBlock([NSDictionary dictionaryWithObjectsAndKeys:@"No Result !",@"Error", nil]);
+              completionBlock([NSDictionary dictionaryWithObjectsAndKeys:@"No Result Found!",@"Error", nil]);
          }
      } failure:^(AFHTTPRequestOperation*
                  operation, NSError *error) {
          // handle error
+         
+         if (error.code==-1011) {
+              completionBlock([NSDictionary dictionaryWithObjectsAndKeys:@"No Results Found!",@"Error", nil]);
+         }
+         else{
+         
           completionBlock([NSDictionary dictionaryWithObjectsAndKeys:[error localizedDescription],@"Error", nil]);
+         }
      }
      ];
 }
 
+/**
+ * Returns weekly forecasted weather conditions
+ * for the specified lat/long
+ *
+ * @param latitude Location latitude
+ * @param longitude Location longitude
+ * @param completionBlock Array of weather results
+ */
+
 - (void)getWeeklyWeather:(float)latitude longitude:(float)longitude
          completionBlock:(void (^)(NSArray *))completionBlock {
+    
     
     // formulate the url to query the api to get the 7 day
     // forecast. cnt=7 asks the api for 7 days. units = imperial
     // will return temperatures in Farenheit
     NSString* url = [NSString stringWithFormat:
-                     @"http://api.openweathermap.org/data/2.5/forecast/daily?units=imperial &cnt=7&lat=%f&lon=%f&APPID=%@", latitude, longitude,@"db437132f1b0182cbea41194fc27ce53"];
+                     @"http://api.openweathermap.org/data/2.5/forecast/daily?units=imperial &cnt=7&lat=%f&lon=%f&APPID=%@", latitude, longitude,[[NSBundle mainBundle] objectForInfoDictionaryKey:@"APPID"]];
     
     
     // escape the url to avoid any potential errors
     
     url = [url  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
 
-    
-    // call the fetch function from Listing 4
     [self fetchWeatherFromProvider:url completionBlock:
      ^(NSDictionary * weatherData) {
          // create an array of weather objects (one for each day)
-         // initialize them using the function from listing 7
-         // and return the results to the calling controller
+         
          NSMutableArray *weeklyWeather =
          [[NSMutableArray alloc] init];
          
@@ -73,21 +93,30 @@
      }];
 }
 
+/**
+ * Returns realtime weather conditions
+ * for the specified lat/long
+ *
+ * @param latitude Location latitude
+ * @param longitude Location longitude
+ * @param completionBlock Weather object
+ */
+
 - (void)getCurrentWeather:(float)latitude longitude:(float)longitude
           completionBlock:(void (^)(Weather *))completionBlock {
     // formulate the url to query the api to get current weather
-    NSString* url = [NSString stringWithFormat:@"http://api.openweathermap.org/data/2.5/weather?units=imperial&cnt=7&lat=%f&lon=%f&APPID=%@", latitude, longitude,@"db437132f1b0182cbea41194fc27ce53"];
+    NSString* url = [NSString stringWithFormat:@"%@units=imperial&cnt=7&lat=%f&lon=%f&APPID=%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"weatherBaseURL"], latitude, longitude,[[NSBundle mainBundle] objectForInfoDictionaryKey:@"APPID"]];
     
     // escape the url to avoid any potential errors
      url = [url  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     
-    // call the fetch function from Listing 4
     [self fetchWeatherFromProvider:url completionBlock:
      ^(NSDictionary * weatherData) {
          // create an weather object by initializing it with
-         // data from the API using the init func from Listing 7
+         // data from the API
          
          
+         // Checking errors
          BOOL isHavingError = NO;
          NSString *errorStr = nil;
          
@@ -110,27 +139,34 @@
      }];
 }
 
+/**
+ * Returns realtime weather conditions
+ * for the specified lat/long
+ * @param cityName name
+ * @param completionBlock Weather object
+ */
+
 - (void)getCurrentWeatherForCity:(NSString*)cityName isCelsius:(BOOL)isCelsius completionBlock:(void (^)(Weather *))completionBlock {
     // formulate the url to query the api to get current weather
     
     NSString* url = nil;
     
     if (isCelsius) {
-        url = [NSString stringWithFormat:@"http://api.openweathermap.org/data/2.5/weather?units=metric&cnt=7&q=%@&APPID=%@", cityName,@"db437132f1b0182cbea41194fc27ce53"];
+        url = [NSString stringWithFormat:@"%@units=metric&cnt=7&q=%@&APPID=%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"weatherBaseURL"], cityName,[[NSBundle mainBundle] objectForInfoDictionaryKey:@"APPID"]];
     }
     else{
     
-        url = [NSString stringWithFormat:@"http://api.openweathermap.org/data/2.5/weather?units=imperial&cnt=7&q=%@&APPID=%@", cityName,@"db437132f1b0182cbea41194fc27ce53"];
+        url = [NSString stringWithFormat:@"%@units=imperial&cnt=7&q=%@&APPID=%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"weatherBaseURL"], cityName,[[NSBundle mainBundle] objectForInfoDictionaryKey:@"APPID"]];
     }
     
     // escape the url to avoid any potential errors
     url = [url  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     
-    // call the fetch function from Listing 4
+    // call the fetch function fetchWeatherFromProvider
     [self fetchWeatherFromProvider:url completionBlock:
      ^(NSDictionary * weatherData) {
          // create an weather object by initializing it with
-         // data from the API using the init func from Listing 7
+         // data from the fetchWeatherFromProvider
          
          BOOL isHavingError = NO;
          NSString *errorStr = nil;
@@ -154,6 +190,12 @@
      }]; 
 }
 
+
+/**
+ * Returns weather icon
+ * @param iconId name
+ */
+
 -(void)getWeatherIcon:(id)iconId{
     
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://openweathermap.org/img/w/%@.png",iconId]]];
@@ -175,6 +217,11 @@
     [requestOperation start];
     
 }
+
+/**
+ * Common method to show alert view
+ * @param errorStr - String having error Value
+ */
 
 
 -(void)showAlertViewController:(NSString*)errorStr{

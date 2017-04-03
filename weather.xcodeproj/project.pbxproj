@@ -146,8 +146,6 @@
 				6EB38F971E917B6100AE483F /* LaunchScreen.storyboard */,
 				6EB38F9A1E917B6200AE483F /* Info.plist */,
 				6EB38F891E917B6100AE483F /* Supporting Files */,
-				6EB38FBC1E91926C00AE483F /* Weather.h */,
-				6EB38FBD1E91926C00AE483F /* Weather.m */,
 			);
 			path = weather;
 			sourceTree = "<group>";
@@ -155,6 +153,8 @@
 		6EB38F891E917B6100AE483F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6EB38FBC1E91926C00AE483F /* Weather.h */,
+				6EB38FBD1E91926C00AE483F /* Weather.m */,
 				6EB38F8A1E917B6100AE483F /* main.m */,
 				6EB38FC11E9192F000AE483F /* WeatherFetcher.h */,
 				6EB38FC21E9192F000AE483F /* WeatherFetcher.m */,
